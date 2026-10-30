@@ -3,90 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Yönetim Paneli - QR Menü</title>
+    <title>Yönetim Paneli - QR Menü</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="bg-gray-100 text-gray-800 p-4 sm:p-8 pb-20">
-    <div class="max-w-2xl mx-auto space-y-6">
-        
-        <!-- Üst Bar -->
-        <div class="bg-white rounded-2xl shadow-xl p-6 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-gray-900"><i class="fa-solid fa-gauge-high text-amber-600 mr-2"></i> Kafe Yönetim Paneli</h1>
-            <a href="/" target="_blank" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg font-semibold text-gray-600 transition">Menüyü Gör ↗</a>
-        </div>
-
-        <!-- Ürün Ekleme Formu -->
-        <div class="bg-white rounded-2xl shadow-xl p-6">
-            <form action="/admin" method="POST" class="space-y-4">
-                <h2 class="text-sm font-bold text-amber-700 uppercase tracking-wider">Yeni Ürün Ekle</h2>
-                
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Kategori</label>
-                    <select name="category" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        <option value="kahve">Sıcak Kahveler</option>
-                        <option value="soguk">Soğuk İçecekler</option>
-                        <option value="tatli">Tatlılar</option>
-                        <option value="kahvalti">Atıştırmalık</option>
-                    </select>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Ürün Adı</label>
-                        <input type="text" name="name" required placeholder="Örn: Türk Kahvesi" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Fiyat (₺)</label>
-                        <input type="number" step="0.01" name="price" required placeholder="50" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Açıklama</label>
-                    <textarea name="desc" rows="2" placeholder="Ürün içeriği..." class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Görsel Linki (URL)</label>
-                        <input type="url" name="img" placeholder="https://..." class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Kalori Bilgisi</label>
-                        <input type="text" name="cal" placeholder="Örn: 120 kcal" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm shadow-lg transition">Ürünü Menüye Ekle</button>
-            </form>
-        </div>
-
-        <!-- Mevcut Ürünleri Listeleme ve Silme -->
-        <div class="bg-white rounded-2xl shadow-xl p-6">
-            <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">Mevcut Ürünler ve Yönetim</h2>
-            <div class="divide-y divide-gray-100 max-h-96 overflow-y-auto">
-                {% for product in products %}
-                <div class="py-3 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <img src="{{ product.img }}" alt="" class="w-12 h-12 rounded-lg object-cover flex-shrink-0">
-                        <div class="min-w-0">
-                            <h4 class="font-bold text-sm text-gray-900 truncate">{{ product.name }}</h4>
-                            <p class="text-xs text-amber-600 font-semibold">{{ product.price }} ₺ &bull; <span class="text-gray-400 capitalize">{{ product.category }}</span></p>
-                        </div>
-                    </div>
-                    <form action="/admin/delete/{{ product.id }}" method="POST" onsubmit="return confirm('Bu ürünü silmek istediğine emin misin?');">
-                        <button type="submit" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                            <i class="fa-solid fa-trash"></i> Sil
-                        </button>
-                    </form>
-                </div>
-                {% endfor %}
+<body class="bg-gray-950 text-white min-h-screen p-6">
+    <div class="max-w-5xl mx-auto">
+        <!-- Üst Başlık ve Aksiyonlar -->
+        <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
+            <div>
+                <h1 class="text-3xl font-bold text-amber-500">⚙️ Kafe Yönetim Paneli</h1>
+                <p class="text-xs text-gray-400 mt-1 flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                    Anlık Canlı Veri Akışı Aktif
+                </p>
+            </div>
+            <div class="flex gap-3 items-center">
+                <a href="/waiter" target="_blank" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl font-bold text-sm transition">🔔 Garson Ekranı</a>
+                <a href="/logout" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-600/30 px-4 py-2 rounded-xl font-bold text-sm transition">Çıkış Yap</a>
             </div>
         </div>
 
+        <!-- Anlık İstatistikler (Dashboard) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between shadow-lg">
+                <div>
+                    <p class="text-xs font-semibold text-gray-400 uppercase">Toplam Ürün</p>
+                    <h3 id="stat-total-products" class="text-3xl font-black text-white mt-1">0</h3>
+                </div>
+                <span class="text-3xl">☕</span>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between shadow-lg">
+                <div>
+                    <p class="text-xs font-semibold text-gray-400 uppercase">Bekleyen Çağrı</p>
+                    <h3 id="stat-active-calls" class="text-3xl font-black text-amber-400 mt-1">0</h3>
+                </div>
+                <span class="text-3xl">🔔</span>
+            </div>
+            <div class="bg-gray-900 border border-gray-800 p-5 rounded-2xl flex items-center justify-between shadow-lg">
+                <div>
+                    <p class="text-xs font-semibold text-gray-400 uppercase">Kategori Sayısı</p>
+                    <h3 id="stat-total-categories" class="text-3xl font-black text-white mt-1">0</h3>
+                </div>
+                <span class="text-3xl">📂</span>
+            </div>
+        </div>
+
+        <!-- Ana İçerik Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Ürün Ekleme Formu -->
+            <div class="bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl h-fit">
+                <h2 class="text-xl font-bold mb-4 text-amber-400">Yeni Ürün Ekle</h2>
+                <form id="product-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Ürün Adı</label>
+                        <input type="text" id="name" required class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Fiyat (₺)</label>
+                        <input type="number" step="0.01" id="price" required class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Kategori</label>
+                        <select id="category" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 text-sm">
+                            <option value="Sıcak Kahveler">Sıcak Kahveler</option>
+                            <option value="Soğuk İçecekler">Soğuk İçecekler</option>
+                            <option value="Tatlılar">Tatlılar</option>
+                            <option value="Atıştırmalıklar">Atıştırmalıklar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Görsel URL (İsteğe bağlı)</label>
+                        <input type="text" id="image" placeholder="https://..." class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 mb-1">Açıklama</label>
+                        <textarea id="description" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 focus:outline-none focus:border-amber-500 text-sm"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-gray-950 font-extrabold py-3 rounded-xl transition shadow-lg">
+                        Ürünü Kaydet
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mevcut Ürünler Listesi -->
+            <div class="lg:col-span-2 bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-amber-400">Menüdeki Ürünler</h2>
+                    <span class="text-xs text-gray-500">Her 5 sn'de otomatik yenilenir</span>
+                </div>
+                <div id="admin-products-list" class="space-y-3 max-h-[520px] overflow-y-auto pr-2">
+                    <div class="text-gray-500 text-center py-8">Yükleniyor...</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Ürünleri & İstatistikleri Çek
+        async function fetchAdminData() {
+            try {
+                // 1. Ürünleri Çek
+                const resProducts = await fetch('/api/products');
+                const products = await resProducts.json();
+                
+                // 2. Çağrıları Çek (İstatistik için)
+                const resCalls = await fetch('/api/calls');
+                const calls = await resCalls.json();
+
+                // İstatistikleri Güncelle
+                document.getElementById('stat-total-products').innerText = products.length;
+                document.getElementById('stat-active-calls').innerText = calls.length;
+                
+                const categories = new Set(products.map(p => p.category));
+                document.getElementById('stat-total-categories').innerText = categories.size;
+
+                // Ürün Listesini Render Et
+                const container = document.getElementById('admin-products-list');
+                if (products.length === 0) {
+                    container.innerHTML = '<div class="text-gray-500 text-center py-8">Henüz ürün eklenmemiş.</div>';
+                    return;
+                }
+
+                container.innerHTML = products.map(p => `
+                    <div class="bg-gray-950 border border-gray-800 p-4 rounded-xl flex justify-between items-center hover:border-gray-700 transition">
+                        <div class="flex items-center gap-3">
+                            <img src="${p.image || 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=150'}" class="w-12 h-12 object-cover rounded-lg">
+                            <div>
+                                <h4 class="font-bold text-white text-sm">${p.name}</h4>
+                                <span class="text-xs text-amber-400 font-semibold">${p.category} • ${p.price} ₺</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteProduct(${p.id})" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition border border-red-600/30">
+                            Sil
+                        </button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error('Veriler alınamadı:', err);
+            }
+        }
+
+        // Ürün Ekleme Formu
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const productData = {
+                name: document.getElementById('name').value,
+                price: parseFloat(document.getElementById('price').value),
+                category: document.getElementById('category').value,
+                image: document.getElementById('image').value,
+                description: document.getElementById('description').value,
+                kcal: 150
+            };
+
+            const res = await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            });
+
+            if (res.ok) {
+                document.getElementById('product-form').reset();
+                fetchAdminData();
+            } else {
+                alert('Ürün eklenirken hata oluştu!');
+            }
+        });
+
+        // Ürün Silme
+        async function deleteProduct(id) {
+            if (confirm('Bu ürünü silmek istediğinize emin misiniz?')) {
+                const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    fetchAdminData();
+                }
+            }
+        }
+
+        // Otomatik Güncelleme (Her 5 Saniyede Bir)
+        setInterval(fetchAdminData, 5000);
+        
+        // İlk Yükleme
+        fetchAdminData();
+    </script>
 </body>
 </html>
